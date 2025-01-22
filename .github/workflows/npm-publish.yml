@@ -20,7 +20,9 @@ jobs:
       # Passo 2: Instalar o k6
       - name: Install k6
         run: |
-          wget -qO- https://dl.k6.io/deb/k6-0.43.0_amd64.deb | sudo dpkg -i -
+          wget https://dl.k6.io/deb/k6-0.43.0_amd64.deb
+          sudo dpkg -i k6-0.43.0_amd64.deb
+          sudo apt-get install -f
           sudo apt-get update
           sudo apt-get install -y k6
 
