@@ -15,7 +15,7 @@ jobs:
     steps:
       # Passo 1: Checkout do repositório
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Passo 2: Instalar o k6
       - name: Install k6
@@ -31,7 +31,7 @@ jobs:
 
       # Passo 4: Fazer upload dos resultados (opcional)
       - name: Upload test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: k6-results
-          path: path/to/test-results
+          path: src/result
