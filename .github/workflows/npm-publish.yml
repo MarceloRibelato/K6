@@ -1,0 +1,37 @@
+name: K6 Performance Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Passo 1: Checkout do repositório
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Passo 2: Instalar o k6
+      - name: Install k6
+        run: |
+          wget -qO- https://dl.k6.io/deb/k6-0.43.0_amd64.deb | sudo dpkg -i -
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      # Passo 3: Rodar o teste k6
+      - name: Run performance tests
+        run: |
+          k6 run src/regres.js
+
+      # Passo 4: Fazer upload dos resultados (opcional)
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: k6-results
+          path: path/to/test-results
