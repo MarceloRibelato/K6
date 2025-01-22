@@ -20,11 +20,12 @@ jobs:
       # Passo 2: Instalar o k6
       - name: Install k6
         run: |
-          wget https://dl.k6.io/deb/k6-0.43.0_amd64.deb
-          sudo dpkg -i k6-0.43.0_amd64.deb
-          sudo apt-get install -f
+          wget -q -O- https://dl.k6.io/deb/k6.asc | sudo tee /etc/apt/trusted.gpg.d/k6.asc
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          
+          # Atualizar repositórios e instalar k6
           sudo apt-get update
-          sudo apt-get install -y k6
+          sudo apt-get install k6
 
       # Passo 3: Rodar o teste k6
       - name: Run performance tests
