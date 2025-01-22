@@ -1,41 +1,23 @@
-name: K6 Performance Testing
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+name: Basic Workflow
+on: [push]
 
 jobs:
-  performance-test:
+  k6_local_test:
+    name: k6 local test run - basic example
     runs-on: ubuntu-latest
-    
+
     steps:
-      # Passo 1: Checkout do repositório
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v1
 
-      # Passo 2: Instalar o k6
-      - name: Install k6
-        run: |
-          wget -q -O- https://dl.k6.io/deb/k6.asc | sudo tee /etc/apt/trusted.gpg.d/k6.asc
-          
-          # Passo 2: Atualizar a lista de pacotes
-          sudo apt-get update
-          
-          # Passo 3: Instalar o k6
-          sudo apt-get install -y k6
-
-      # Passo 3: Rodar o teste k6
-      - name: Run performance tests
-        run: |
-          k6 run src/regres.js
-
-      # Passo 4: Fazer upload dos resultados (opcional)
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
+      - name: Run local k6 test
+        uses: grafana/k6-action@v0.2.0
         with:
-          name: k6-results
-          path: src/result
+          filename: src/regres.js
+          flags: --out json=results.json
+
+      - name: Upload performance test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-report
+          path: results.json
